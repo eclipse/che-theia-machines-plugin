@@ -1,0 +1,49 @@
+{
+  "name": "theia-machines-extension",
+  "version": "0.0.1",
+  "description": "displaying workspace's machines information for the Theia IDE",
+  "keywords": [
+    "theia-extension",
+    "che",
+    "ssh"
+  ],
+  "license": "EPL-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse/che-theia-machines-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eclipse/che-theia-machines-plugin/issues"
+  },
+  "homepage": "https://github.com/eclipse/che-theia-machines-plugin",
+  "contributors": [
+    {
+      "name": "Oleksii Orel",
+      "email": "oorel@redhat.com"
+    }
+  ],
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "0.3.8",
+    "workspace-client": "https://github.com/akurinnoy/workspace-client"
+  },
+  "devDependencies": {
+    "rimraf": "2.6.2",
+    "typescript": "2.7.2"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/theia-machines-frontend-module",
+      "backend": "lib/node/env-variables-backend-module"
+    }
+  ]
+}

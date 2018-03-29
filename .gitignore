@@ -1,0 +1,8 @@
+node_modules
+.idea
+.browser_modules
+lib
+*.lock
+*.log
+*-app/*
+!*-app/package.json
