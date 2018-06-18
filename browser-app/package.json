@@ -3,23 +3,23 @@
   "name": "browser-app",
   "version": "0.0.1",
   "dependencies": {
-    "@theia/core": "0.3.8",
-    "@theia/filesystem": "0.3.8",
-    "@theia/workspace": "0.3.8",
-    "@theia/preferences": "0.3.8",
-    "@theia/navigator": "0.3.8",
-    "@theia/process": "0.3.8",
-    "@theia/terminal": "0.3.8",
-    "@theia/editor": "0.3.8",
-    "@theia/languages": "0.3.8",
-    "@theia/markers": "0.3.8",
-    "@theia/monaco": "0.3.8",
-    "@theia/typescript": "0.3.8",
-    "@theia/messages": "0.3.8",
+    "@theia/core": "0.3.10",
+    "@theia/filesystem": "0.3.10",
+    "@theia/workspace": "0.3.10",
+    "@theia/preferences": "0.3.10",
+    "@theia/navigator": "0.3.10",
+    "@theia/process": "0.3.10",
+    "@theia/terminal": "0.3.10",
+    "@theia/editor": "0.3.10",
+    "@theia/languages": "0.3.10",
+    "@theia/markers": "0.3.10",
+    "@theia/monaco": "0.3.10",
+    "@theia/typescript": "0.3.10",
+    "@theia/messages": "0.3.10",
     "theia-machines-extension": "0.0.1"
   },
   "devDependencies": {
-    "@theia/cli": "0.3.8"
+    "@theia/cli": "0.3.10"
   },
   "scripts": {
     "prepare": "theia build",

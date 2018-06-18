@@ -27,8 +27,8 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "0.3.8",
-    "workspace-client": "https://github.com/akurinnoy/workspace-client"
+    "@theia/core": "0.3.10",
+    "@eclipse-che/workspace-client": "0.0.1-1527159618"
   },
   "devDependencies": {
     "rimraf": "2.6.2",
@@ -42,8 +42,7 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/theia-machines-frontend-module",
-      "backend": "lib/node/env-variables-backend-module"
+      "frontend": "lib/browser/theia-machines-frontend-module"
     }
   ]
 }

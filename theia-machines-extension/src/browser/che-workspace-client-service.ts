@@ -10,26 +10,33 @@
  */
 
 import {inject, injectable} from 'inversify';
-import {IBaseEnvVariablesServer} from '../common/base-env-variables-protocol';
-import {getRestApi, getBackend, IRemoteAPI, IBackend} from 'workspace-client';
+import WorkspaceClient, {IRemoteAPI, IBackend} from '@eclipse-che/workspace-client';
+import { EnvVariablesServer, EnvVariable } from '@theia/core/lib/common/env-variables';
+import { Deferred } from '@theia/core/lib/common/promise-util';
 
 @injectable()
 export class CheWorkspaceClientService {
 
-    private cheApi: string;
+    private waitCheApi = new Deferred<string>();
     private _backend: IBackend;
 
-    constructor(@inject(IBaseEnvVariablesServer) protected readonly baseEnvVariablesServer: IBaseEnvVariablesServer) {
-        this.baseEnvVariablesServer.getEnvValueByKey('CHE_API').then((cheApi: string) => {
-            this.cheApi = cheApi;
+    constructor(@inject(EnvVariablesServer) protected readonly baseEnvVariablesServer: EnvVariablesServer) {
+        this.baseEnvVariablesServer.getValue('CHE_API_EXTERNAL').then((cheApiEnv: EnvVariable | undefined) => {
+            if (cheApiEnv && cheApiEnv.value) {
+                this.waitCheApi.resolve(cheApiEnv.value);
+            } else {
+                this.waitCheApi.reject('Failed to get Eclipse CHE api endPoint');
+            }
         });
-        this._backend = getBackend();
+        this._backend = WorkspaceClient.getRestBackend();
     }
 
-    get restClient(): IRemoteAPI {
-        return getRestApi({
-            baseUrl: this.cheApi
-        });
+    async restClient(): Promise<IRemoteAPI> {
+        const cheApi = await this.waitCheApi.promise;
+
+        return WorkspaceClient.getRestApi({
+            baseUrl: cheApi
+            });
     }
 
     get backend(): IBackend {
