@@ -56,10 +56,14 @@ export class CheWorkspaceMachinesService {
         return new Promise<Array<IWorkspaceMachine>>((resolve, reject) => {
             remoteApi.getById<IWorkspace>(workspaceId)
                 .then((workspace: IWorkspace) => {
-                    const workspaceMachines = workspace && workspace.runtime && workspace.runtime.machines || workspace.config.environments[workspace.config.defaultEnv].machines || [];
+                    const workspaceMachines = workspace
+                                              && workspace.runtime
+                                              && workspace.runtime.machines
+                                              || workspace.config.environments[workspace.config.defaultEnv].machines
+                                              || [];
 
                     this.runtimeMachines.splice(0, this.runtimeMachines.length);
-                    for (const machineName in workspaceMachines) {
+                    for (const machineName of workspaceMachines) {
                         const machine: IWorkspaceMachine = workspaceMachines[machineName];
                         machine.machineName = machineName;
                         this.runtimeMachines.push(machine);
@@ -68,7 +72,7 @@ export class CheWorkspaceMachinesService {
                     return resolve(this.runtimeMachines);
                 }).catch(reason => {
                     reject(`Failed to update list machines.`);
-                })
+                });
         });
     }
 

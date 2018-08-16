@@ -46,7 +46,6 @@ export class MachinesViewContribution extends AbstractViewContribution<MachinesV
     protected symbolList: NodeAndSymbol[] = [];
     protected readonly toDispose = new DisposableCollection();
 
-
     constructor(@inject(MachinesViewService) protected readonly machineViewService: MachinesViewService,
                 @inject(CheWorkspaceMachinesService) private readonly cheMachines: CheWorkspaceMachinesService) {
         super({
@@ -176,7 +175,7 @@ export class MachinesViewContribution extends AbstractViewContribution<MachinesV
 
     private getRandId(nodeName: string, key?: string): string {
         let uniqueId: string = '';
-        let name = key ? `${nodeName}_${key}` : nodeName;
+        const name = key ? `${nodeName}_${key}` : nodeName;
         for (let counter = 0; counter < 100; counter++) {
             uniqueId = `${name}_id_${('0000' + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4)}`;
             if (this.ids.findIndex(id => id === uniqueId) === -1) {

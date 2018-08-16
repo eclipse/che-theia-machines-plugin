@@ -35,7 +35,6 @@ export namespace MachinesSymbolInformationNode {
 export type MachinesViewWidgetFactory = () => MachinesViewWidget;
 export const MachinesViewWidgetFactory = Symbol('MachinesViewWidgetFactory');
 
-
 @injectable()
 export class MachinesViewWidget extends TreeWidget {
 
