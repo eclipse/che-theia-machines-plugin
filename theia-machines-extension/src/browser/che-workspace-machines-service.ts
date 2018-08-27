@@ -44,35 +44,34 @@ export class CheWorkspaceMachinesService {
         });
     }
 
-    async updateMachines(): Promise<Array<IWorkspaceMachine>> {
-        const workspaceId = await this.waitWorkspaceId.promise;
+    async updateMachines(): Promise<void> {
+        const workspaceId = await this.waitWorkspaceId;
         if (!workspaceId) {
-            return Promise.reject('Failed to get workspaceId');
+            return Promise.reject('Failed to get workspace id');
         }
 
         const remoteApi = await this.cheWorkspaceClient.restClient();
+        if (!remoteApi) {
+            return Promise.reject('Failed to get Eclipse CHE api endPoint');
+        }
 
-        return new Promise<Array<IWorkspaceMachine>>((resolve, reject) => {
-            remoteApi.getById<IWorkspace>(workspaceId)
-                .then((workspace: IWorkspace) => {
-                    const workspaceMachines = workspace
-                                              && workspace.runtime
-                                              && workspace.runtime.machines
-                                              || workspace.config.environments[workspace.config.defaultEnv].machines
-                                              || [];
+        const workspace = await remoteApi.getById<IWorkspace>(workspaceId);
+        if (!workspace) {
+            return Promise.reject('Failed to get workspace configuration');
+        }
 
-                    this.runtimeMachines.splice(0, this.runtimeMachines.length);
-                    for (const machineName of workspaceMachines) {
-                        const machine: IWorkspaceMachine = workspaceMachines[machineName];
-                        machine.machineName = machineName;
-                        this.runtimeMachines.push(machine);
-                    }
+        const workspaceMachines = workspace!.runtime
+            && workspace!.runtime!.machines
+            || workspace!.config.environments[workspace.config.defaultEnv].machines
+            || {};
 
-                    return resolve(this.runtimeMachines);
-                }).catch(reason => {
-                    reject(`Failed to update list machines.`);
-                });
+        this.runtimeMachines.length = 0;
+        Object.keys(workspaceMachines).forEach((machineName: string) => {
+            const machine: IWorkspaceMachine = workspaceMachines[machineName];
+            machine.machineName = machineName;
+            this.runtimeMachines.push(machine);
         });
+
     }
 
     get machines(): Array<IWorkspaceMachine> {
