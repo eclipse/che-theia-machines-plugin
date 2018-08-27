@@ -25,8 +25,8 @@ export default new ContainerModule(bind => {
     bind(CheWorkspaceClientService).toSelf();
     bind(CheWorkspaceMachinesService).toSelf();
 
-    bind(MachinesViewWidgetFactory).toFactory(ctx =>
-        () => createMachinesViewWidget(ctx.container)
+    bind(MachinesViewWidgetFactory).toFactory(context =>
+        () => createMachinesViewWidget(context.container)
     );
 
     bind(MachinesViewService).toSelf().inSingletonScope();
@@ -35,9 +35,9 @@ export default new ContainerModule(bind => {
     bind(MachinesViewContribution).toSelf().inSingletonScope();
     bind(FrontendApplicationContribution).toDynamicValue(c => c.container.get(MachinesViewContribution));
 
-    bind(CommandContribution).toDynamicValue(c => c.container.get(MachinesViewContribution));
-    bind(KeybindingContribution).toDynamicValue(c => c.container.get(MachinesViewContribution));
-    bind(MenuContribution).toDynamicValue(c => c.container.get(MachinesViewContribution));
+    bind(CommandContribution).toDynamicValue(context => context.container.get(MachinesViewContribution));
+    bind(KeybindingContribution).toDynamicValue(context => context.container.get(MachinesViewContribution));
+    bind(MenuContribution).toDynamicValue(context => context.container.get(MachinesViewContribution));
 });
 
 function createMachinesViewWidget(parent: interfaces.Container): MachinesViewWidget {

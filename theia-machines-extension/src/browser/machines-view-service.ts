@@ -8,11 +8,11 @@
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
 
-import { injectable, inject } from 'inversify';
-import { WidgetFactory } from '@theia/core/lib/browser';
-import { Event, Emitter, DisposableCollection } from '@theia/core';
-import { MachinesViewWidget, MachinesViewWidgetFactory, MachinesSymbolInformationNode } from './machines-view-widget';
-import { Widget } from '@phosphor/widgets';
+import {injectable, inject} from 'inversify';
+import {WidgetFactory} from '@theia/core/lib/browser';
+import {Event, Emitter, DisposableCollection} from '@theia/core';
+import {MachinesViewWidget, MachinesViewWidgetFactory, MachinesSymbolInformationNode} from './machines-view-widget';
+import {Widget} from '@phosphor/widgets';
 
 @injectable()
 export class MachinesViewService implements WidgetFactory {

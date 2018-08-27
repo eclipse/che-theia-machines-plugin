@@ -9,10 +9,9 @@
  **********************************************************************/
 
 import {injectable, inject} from 'inversify';
-import { EnvVariablesServer, EnvVariable } from "@theia/core/lib/common/env-variables";
-import { CheWorkspaceClientService } from './che-workspace-client-service';
+import {EnvVariablesServer, EnvVariable} from '@theia/core/lib/common/env-variables';
+import {CheWorkspaceClientService} from './che-workspace-client-service';
 import {IWorkspace} from '@eclipse-che/workspace-client';
-import { Deferred } from '@theia/core/lib/common/promise-util';
 
 export interface IWorkspaceMachine {
     machineName?: string;
@@ -29,19 +28,18 @@ export interface IWorkspaceMachine {
 export class CheWorkspaceMachinesService {
 
     protected runtimeMachines: Array<IWorkspaceMachine> = [];
-    protected waitWorkspaceId = new Deferred<string>();
+    protected waitWorkspaceId: Promise<string>;
 
-    constructor(
-        @inject(CheWorkspaceClientService) private readonly cheWorkspaceClient: CheWorkspaceClientService,
-        @inject(EnvVariablesServer) protected readonly baseEnvVariablesServer: EnvVariablesServer) {
+    constructor(@inject(CheWorkspaceClientService) private readonly cheWorkspaceClient: CheWorkspaceClientService,
+                @inject(EnvVariablesServer) protected readonly baseEnvVariablesServer: EnvVariablesServer) {
 
-        this.baseEnvVariablesServer.getValue('CHE_WORKSPACE_ID').then((workspaceIdEnv: EnvVariable | undefined) => {
-            if (workspaceIdEnv && workspaceIdEnv.value) {
-                this.waitWorkspaceId.resolve(workspaceIdEnv.value);
-            } else {
-                this.waitWorkspaceId.reject('Failed to get workspace id');
-            }
-        });
+        this.waitWorkspaceId = this.baseEnvVariablesServer.getValue('CHE_WORKSPACE_ID')
+            .then((workspaceIdEnv: EnvVariable | undefined) => {
+                if (workspaceIdEnv && workspaceIdEnv.value) {
+                    return Promise.resolve(workspaceIdEnv.value);
+                }
+                return Promise.reject('Failed to get workspace id');
+            });
     }
 
     async updateMachines(): Promise<void> {
@@ -66,12 +64,12 @@ export class CheWorkspaceMachinesService {
             || {};
 
         this.runtimeMachines.length = 0;
+
         Object.keys(workspaceMachines).forEach((machineName: string) => {
             const machine: IWorkspaceMachine = workspaceMachines[machineName];
             machine.machineName = machineName;
             this.runtimeMachines.push(machine);
         });
-
     }
 
     get machines(): Array<IWorkspaceMachine> {

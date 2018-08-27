@@ -59,7 +59,7 @@ export class MachinesViewContribution extends AbstractViewContribution<MachinesV
         });
     }
 
-    protected onStart() {
+    protected onStart(): void {
         this.updateMachines();
         this.machineViewService.onDidChangeOpenState(async isOpen => {
             if (isOpen) {
@@ -71,14 +71,12 @@ export class MachinesViewContribution extends AbstractViewContribution<MachinesV
         });
     }
 
-    protected updateMachines() {
-        this.cheMachines.updateMachines().then(() => {
-            const machines: Array<IWorkspaceMachine> = this.cheMachines.machines;
-            this.publish(machines);
-        });
+    protected async updateMachines(): Promise<void> {
+        await this.cheMachines.updateMachines();
+        this.publish(this.cheMachines.machines);
     }
 
-    protected publish(machines: Array<IWorkspaceMachine>) {
+    protected publish(machines: Array<IWorkspaceMachine>): void {
         this.ids.length = 0;
         this.symbolList.length = 0;
 

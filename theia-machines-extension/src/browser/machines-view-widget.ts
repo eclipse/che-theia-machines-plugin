@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
 
-import { injectable, inject } from 'inversify';
+import {injectable, inject} from 'inversify';
 import {
     TreeWidget,
     TreeNode,
@@ -19,9 +19,9 @@ import {
     TreeModel,
     ExpandableTreeNode
 } from '@theia/core/lib/browser';
-import { Emitter } from '@theia/core';
-import { CompositeTreeNode } from '@theia/core/lib/browser';
-import { Message } from '@phosphor/messaging';
+import {Emitter} from '@theia/core';
+import {CompositeTreeNode} from '@theia/core/lib/browser';
+import {Message} from '@phosphor/messaging';
 
 export interface MachinesSymbolInformationNode extends CompositeTreeNode, SelectableTreeNode, ExpandableTreeNode {
     iconClass: string;
@@ -39,11 +39,9 @@ export class MachinesViewWidget extends TreeWidget {
 
     readonly onDidChangeOpenStateEmitter = new Emitter<boolean>();
 
-    constructor(
-        @inject(TreeModel) model: TreeModel,
-        @inject(TreeProps) protected readonly treeProps: TreeProps,
-        @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer
-    ) {
+    constructor(@inject(TreeModel) model: TreeModel,
+                @inject(TreeProps) protected readonly treeProps: TreeProps,
+                @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer) {
         super(treeProps, model, contextMenuRenderer);
 
         this.id = 'machines-view';
@@ -73,7 +71,7 @@ export class MachinesViewWidget extends TreeWidget {
     protected createNodeClassNames(node: TreeNode, props: NodeProps): string[] {
         const classNames = super.createNodeClassNames(node, props);
         if (MachinesSymbolInformationNode.is(node)) {
-             classNames.push(node.iconClass);
+            classNames.push(node.iconClass);
         }
         return classNames;
     }

@@ -1,5 +1,5 @@
 # Theia Machines Extension
-The example of how to build the Theia-based applications with the che-theia-machines extension.
+This example of how to build the Theia-based applications with a che-theia-machines extension.
 
 ## Getting started
 
@@ -46,21 +46,6 @@ Start watching of the browser example.
 Launch `Start Browser Backend` configuration from VS code.
 
 Open http://localhost:3000 in the browser.
-
-## Developing with the Electron example
-
-Start watching of the che-theia-machines extension.
-
-    cd theia-machines-extension
-    yarn watch
-
-Start watching of the electron example.
-
-    yarn rebuild:electron
-    cd electron-app
-    yarn watch
-
-Launch `Start Electron Backend` configuration from VS code.
 
 ## Publishing theia-machines-extension
 
