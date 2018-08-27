@@ -3,7 +3,6 @@
   "scripts": {
     "prepare": "yarn tslint && lerna run prepare",
     "rebuild:browser": "theia rebuild:browser",
-    "rebuild:electron": "theia rebuild:electron",
     "tslint-fix": "tslint --fix --project theia-machines-extension",
     "tslint": "tslint --project theia-machines-extension"
   },
@@ -13,6 +12,6 @@
     "tslint": "5.10.0"
   },
   "workspaces": [
-    "theia-machines-extension", "browser-app", "electron-app"
+    "theia-machines-extension", "browser-app"
   ]
 }
