@@ -8,10 +8,10 @@
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
 
-import {injectable, inject} from 'inversify';
-import {EnvVariablesServer, EnvVariable} from '@theia/core/lib/common/env-variables';
-import {CheWorkspaceClientService} from './che-workspace-client-service';
-import {IWorkspace} from '@eclipse-che/workspace-client';
+import { injectable, inject } from 'inversify';
+import { EnvVariablesServer, EnvVariable } from '@theia/core/lib/common/env-variables';
+import { CheWorkspaceClientService } from './che-workspace-client-service';
+import { che } from '@eclipse-che/api';
 
 export interface IWorkspaceMachine {
     machineName?: string;
@@ -21,7 +21,7 @@ export interface IWorkspaceMachine {
             port?: string;
         }
     };
-    status: string;
+    status?: 'STARTING' | 'RUNNING' | 'STOPPED' | 'FAILED';
 }
 
 @injectable()
@@ -31,7 +31,7 @@ export class CheWorkspaceMachinesService {
     protected waitWorkspaceId: Promise<string>;
 
     constructor(@inject(CheWorkspaceClientService) private readonly cheWorkspaceClient: CheWorkspaceClientService,
-                @inject(EnvVariablesServer) protected readonly baseEnvVariablesServer: EnvVariablesServer) {
+        @inject(EnvVariablesServer) protected readonly baseEnvVariablesServer: EnvVariablesServer) {
 
         this.waitWorkspaceId = this.baseEnvVariablesServer.getValue('CHE_WORKSPACE_ID')
             .then((workspaceIdEnv: EnvVariable | undefined) => {
@@ -53,14 +53,14 @@ export class CheWorkspaceMachinesService {
             return Promise.reject('Failed to get Eclipse CHE api endPoint');
         }
 
-        const workspace = await remoteApi.getById<IWorkspace>(workspaceId);
+        const workspace = await remoteApi.getById<che.workspace.Workspace>(workspaceId);
         if (!workspace) {
             return Promise.reject('Failed to get workspace configuration');
         }
 
         const workspaceMachines = workspace!.runtime
             && workspace!.runtime!.machines
-            || workspace!.config.environments[workspace.config.defaultEnv].machines
+            || workspace!.config!.environments![workspace.config!.defaultEnv!].machines
             || {};
 
         this.runtimeMachines.length = 0;
