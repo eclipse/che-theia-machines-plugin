@@ -1,3 +1,8 @@
+# Deprecated
+
+This feature has been merged as a plugin in eclipse/che-theia:
+https://github.com/eclipse/che-theia/pull/13/files
+
 # Theia Machines Extension
 This example of how to build the Theia-based applications with a che-theia-machines extension.
 
